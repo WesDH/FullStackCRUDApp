@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>CS290: HW6: CRUD App</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<main>
+
+  <!-- Static HTML for the "add table" that displays at the top of homepage	-->
+	<table id="add-table">
+		<thead>
+			<tr>
+				<th>
+					Name
+				</th>
+				<th>
+					Reps
+				</th>
+				<th>
+					Weight
+				</th>
+				<th>
+					Date
+				</th>
+				<th>
+					Units
+				</th>
+				<th>
+					Submit
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<input type="text" id="name-input" maxlength="50">
+				</td>
+				<td>
+					<input type="number" id="reps-input">
+				</td>
+				<td>
+					<input type="number" id="weight-input">
+				</td>
+				<td>
+					<input type="date" id="date-input" maxlength="30">
+				</td>
+				<td>
+					<input type="radio" id="lbs-weight" name="weight-input" value="lbs">
+					<label for="weight-input">lbs</label>
+					<input type="radio" id="kgs-weight" name="weight-input" value="kgs">
+					<label for="weight-input">kgs</label>
+				</td>
+				<td>
+					<button id="add-data-btn">Submit</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+	<!-- Dynamic HTML for the "exercise table" that displays below the add table	-->
+	<table id="table">
+		<thead>
+		<th>Exercise Name</th>
+		<th>Reps</th>
+		<th>Weight</th>
+		<th>Date</th>
+		<th>Units</th>
+		<th>Delete</th>
+		<th>Edit</th>
+		</thead>
+		<tbody id="exercise-table-body">
+			<!-- Space-Holder for dynamic DOM HTML to be added to the table <tbody> via Javascript -->
+		</tbody>
+	</table>
+
+</main>
+
+<!-- Update table row HTML here, hidden by default-->
+<section hidden id="edit_section">
+	<legend> Name/Reps/Weight/Date/Unit </legend>
+	<input type="text" id="update-name-input">
+	<input type="number" id="update-reps-input">
+	<input type="number" id="update-weight-input">
+	<input type="date" id="update-date-input">
+
+	<input type="radio" id="update-lbs-weight" name="weight-input" value="lbs"
+				 checked>
+	<label for="lbs-weight">lbs</label>
+
+	<input type="radio" id="update-kgs-weight" name="weight-input" value="kgs">
+	<label for="kgs-weight">kgs</label>
+
+	<button id="update-row-btn">Update</button>
+</section>
+
+<script src="index.js"></script>
+</body>
+</html>
