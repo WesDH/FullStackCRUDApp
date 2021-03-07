@@ -10,28 +10,19 @@ const database_service = require('./database_service');
 
 const app = express();
 
-// CORS preflight options: Valid for all Express routes '*'
+// Set CORS "preflight" options: Valid for all Express routes '*'
 // Allows localhost to send requests from a different port number (cross origin)
-// Allows the request(POST,DELETE... etc) to send cookie credentials (custom headers)
+// Allows the preflight request(POST,DELETE... etc) to send cookie credentials (custom headers)
 app.options('*', cors({
     origin: 'http://localhost:63342',
     credentials: true
     }));
 
-// To prevent CORs errors
+// To prevent CORS errors
 app.use(cors());
-
-
-
-
-
 
 app.use(session(
     {secret: 'mysecrets'}));
-        // cookie: { domain:'http://localhost:5000',
-        //     sameSite: 'none',
-        // path: '/'},
-
 // 1. Client receives a request (no cookie)
 // 2. Server receives request and creates a new session with a cookie and sessionID
 // 3. Server sends new session's cookie back to client under the connect.sid name
@@ -39,70 +30,39 @@ app.use(session(
 // 5. Server retrieves session associated with the value of the connect.sid cookie that the client sent
 
 
+// Middleware function, fixes CORS errors
+// Troubleshooting the problem of differing client and host ports when developing on localhost.
+// Differing host and client ports is a cross-origin request
 app.use(function (req, res, next) {
-
-    // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
-
-    // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-    // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Content-type');
-
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-
-    // Pass to next layer of middleware
     next();
 });
-
-
-
-// ## CORS middleware
-//
-// see: http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
-// var allowCrossDomain = function(req, res, next) {
-//     res.header('Access-Control-Allow-Origin', 'http://localhost:63342');
-//     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-//     res.setHeader('Access-Control-Allow-Credentials', 'true');
-//
-//     // intercept OPTIONS method
-//     if ('OPTIONS' === req.method) {
-//         res.send(200);
-//     }
-//     else {
-//         next();
-//     }
-// };
-// app.use(allowCrossDomain);
-
-
 
 app.use(express.json()); // App to parse request body
 app.use(express.urlencoded( {extended: false }));
 
 
-app.get
-('/', (request, response) =>
-{
-    console.log("hellloopo")
-    console.log('Cookies: ', request.cookies);
-    console.log('app.get : / : session ID: ' + request.sessionID);
-    //console.log(response)
-    response.send(null)
-});
+// app.get
+// ('/', (request, response) =>
+// {
+//     console.log("hellloopo")
+//     console.log('Cookies: ', request.cookies);
+//     console.log('app.get : / : session ID: ' + request.sessionID);
+//     //console.log(response)
+//     response.send(null)
+// });
 
 
 
-// Insert
+// Insert route
 app.post
 ('/insert', (request, response) =>
 {
     //console.log(request.body);
-    response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
+    //response.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
     const {name} = request.body;
     const {reps} = request.body;
     const {weight} = request.body;
@@ -120,8 +80,7 @@ app.post
 }); // End of app.post callback
 
 
-//Read
-// Grab req.sessionID which is the cookie
+// Read route
 app.get
 ('/getAll', (request, response) =>
 {
@@ -153,10 +112,29 @@ app.get
 });
 
 
-// Update
+// Update (edit) route
+app.patch
+('/edit', (request, response) =>
+{
+    console.log(request.body)
+    const {id} = request.body;
+    const {name} = request.body;
+    const {reps} = request.body;
+    const {weight} = request.body;
+    const {date} = request.body;
+    const {unit} = request.body;
+
+    const db = database_service.get_db_service_instance();
+    const result = db.editRow
+    (request.sessionID, id, name, reps, weight, date, unit);
+
+    result
+        .then(data => response.json({success : data}))
+        .catch(err => console.log(err));
+});
 
 
-// Delete
+// Delete route
 app.delete
 ('/del/:id', (request, response) =>
 {
@@ -164,14 +142,12 @@ app.delete
 
     //console.log(`Delete id: ${id}`);
     const db = database_service.get_db_service_instance();
-
     const result = db.deleteRow(id)
 
     // Send the response back to the front end index.js
     result
         .then(data => response.json({ success: true}))
         .catch(err => console.log(err));
-
 });
 
 

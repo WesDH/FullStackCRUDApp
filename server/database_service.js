@@ -173,6 +173,55 @@ class database_service
             return false;
         }
     }
+    //request.sessionID, edit_row_id, edit_name, edit_reps, edit_weight, edit_date, edit_unit
+    // Method to handle an edit row request, validates request with current sessionID
+    async editRow(sessionID, rowID, name, reps, weight, date, unit)
+    {
+        if (reps === "") { reps = 0}
+        if (weight === "") { weight = 0}
+        console.log(sessionID, rowID, name, reps, weight, date, unit)
+        try
+        {
+            const response = await new Promise((resolve, reject) =>
+            {
+                //                 const query = `INSERT INTO exercises (sessionID, name, reps, weight, date, units) VALUES
+                //                 ('${sessionID}', '${name}', '${reps}', '${weight}', '${date}', '${unit}');`;
+                const query =
+                    `UPDATE exercises 
+                    SET name = '${name}', reps = '${reps}', weight = '${weight}', date = '${date}', units = '${unit}' 
+                    WHERE sessionID = '${sessionID}' AND id = ${rowID};`;
+                console.log(query);
+                // Query the database, with callback function to handle success or error state
+                connection.query
+                (query, (err, result) =>
+                    {
+                        if (err)
+                        {
+                            // If error in the SQL query request: reject the Promise with the error message
+                            reject(new Error(err.message));
+                        }
+                        // console.log(result) //gives more info
+                        //console.log("Inside the editRow query callback function: \n")
+                        //console.log(result.affectedRows)
+                        console.log(result);
+                        resolve(result.affectedRows); // Return results of database query
+                    } // End of "connection.query" call-back
+                ) // End of "connection.query"
+            });// End of promise response
+            if (response === 1) {
+                return true;
+            } else
+            {
+                return false;
+            }
+
+        } catch (error)
+        {
+            console.log(error);
+            return false;
+        }
+
+    }
 
 
 }

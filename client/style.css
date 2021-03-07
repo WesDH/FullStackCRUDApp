@@ -18,4 +18,8 @@ th, td {
     padding: 7px;
 }
 
+#lbs-weight, #kgs-weight {
+    align-items: left;
+}
+
 
