@@ -8,4 +8,4 @@ User session-id tied to SQL database (try refreshing the page or opening a new w
 
 Live version of app: <a href="http://weshavens.info/CS290HW6/" target="_new1">http://weshavens.info/CS290HW6/</a>
 <br>
-(DigitalOcean cloud hosting using a LEMP stack: Ubuntu Linux cloud OS running NGINX server, with MySQL (But no PHP in the app source code).
+(DigitalOcean cloud hosting using a LEMP stack: Ubuntu Linux 18.4 running NGINX server, with MySQL (But no PHP in the app source code).
