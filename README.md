@@ -9,3 +9,8 @@ User session-id tied to SQL database (try refreshing the page or opening a new w
 Live version of app: <a href="http://weshavens.info/CRUDapp/" target="_new1">http://weshavens.info/CRUDapp/</a>
 <br>
 (DigitalOcean cloud hosting using a LEMP stack: Ubuntu Linux 18.4 running NGINX server, with MySQL (But no PHP in the app source code).
+
+
+Sources cited:
+Special thanks to Nsquared Coding with the the guide "Node.js, Express & MySQL Tutorial - Build a Simple FullStack App", for which I used as the base guide to create this app.
+Link to guide: https://www.youtube.com/watch?v=vrj9AohVhPA
